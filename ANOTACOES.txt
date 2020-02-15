@@ -1,0 +1,52 @@
+- [REDHAT] JBOSS FORGE: Framework para criar a Estrutura Inicial do Projeto. http://forge.jboss.org/download
+-- Configurar a variável de ambiente FORGE_HOME e adicionar ao Path
+-- Precisa estar com a JAVA_HOME apontando para o jdk1.8
+-- Executar o arquivo forge.bat (Windows) diretamente (clique duplo sobre ele)
+--- project-new --named <YourProjectNameHere>
+
+
+- [SPRING-MVC]
+-- Pacote conf: 
+--- AppWebConfiguration (configurações do Spring)
+--- JPAConfiguration: Hibernate (DB SQL)
+--- ServletSpringMVC: Servlet Controller
+
+-- Criar Pacote Controllers
+-- Inserir Annotation @Controller acima do escopo da Classe
+-- Inserir as Dependências dentro do POM.xml (após o fechamento da </properties>)
+-- Criar o Servlet Spring para tratar requisições (Classe extends AbstractAnnotationConfigDispatcherServletInitializer)
+- BINDING: Se o atributo "name" de uma tag HTML for identico ao nome do atributo na classe Controller Java, o Spring associará automaticamente
+- JPA (JAVA PERSISTENCE API): HIBERNATE
+- REDIRECT-ATTRIBUTES (FLASH SCOPED ATTRIBUTES): atributos com escopo de duração curto (entre uma requisição de redirecionamento [cód. 302])
+- VALIDATION-UTILS: ValidationUtils.rejectIfEmpty(org.springframework.validation.Errors, "atributeName", "rule< e.g. field.required>")
+- ENVIO DE ARQUIVOS (MULTIPART): deve constrar o enctype"multipart/form-data" no <form:form>. e.g. <form:form enctype"multipart/form-data">
+- DISPONIBILIZAR BEANS NO JSP: AppWebConfiguration >> internalResourceViewResolver() >> resolver.setExposedContextBeanNames("YOUR-CLASS-NAME-STARTING-FIRST-LETTER-LOWERCASE");
+- REST-TEMPLATE: restTemplate.postForObject() //Classe Spring que realiza requisições GET/POST via REST
+- JACKSON:  API para serializar ou mapear objetos java para JSON e vice-versa.
+- REQUSIÇÕES-ASSÍNCRONAS: A partir de Servlet 3.0 //Callable<T>
+
+- [SPRING@ANNOTATIONS]
+-- @Autowired //indicar ao Spring que o objeto anotado é um Bean dele e que queremos que ele nos dê uma instância por meio do recurso de injeção de dependência (é como se estivesse instanciando um novo objeto com "new").
+-- @Bean //Indica que o método será gerenciado pelo Spring //Não pode ser usado para classes //Por Default é Singleton (Scopo=Aplicação <ou seja, enquanto a aplicação estiver em execução>)
+-- @Component //Indicar que a classe será gerenciada pelo Spring //Não pode ser usado para métodos //Por Default é Singleton (Scopo=Aplicação <ou seja, enquanto a aplicação estiver em execução>)
+-- @ComponentScan(basePackageClasses= {HomeController.class}) //Indica onde estarão as Classes Controller
+-- @Controller //Indica para o Spring que a Classe será um Controlador (de requisições de/para uma JSP)
+-- @DateTimeFormat(pattern="dd/MM/yyyy") //Especifica o formato de DateTime para formatar de String para Calendar //ou faz pelo método mvcConversionService na classe AppWebConfiguration
+-- @EnableTransactionManagement //Permite que o Spring cuide das transações na DB
+-- @EnableWebMVC //Habilita o uso de Spring MVC no Projeto a partir da classe de Configuração passada ao método getServletConfigClasses do ServletSpringMVC
+-- @InitBinder //Efetua a ligação do Validator com o Bean (e.g. Produto)
+-- @PathVariable("YOUR-VAR-HERE") //Variável que está no path do browser e vai ser linkada ao objeto [URL Amigáveis] 
+-- @PersistenceContext //Gerencia conexões com a DB para JPA
+-- @Repository //Indica que a classe é uma DAO e deve ser gerenciada pelo Spring
+-- @RequestMapping("URL. e.g. /") //Mapeia Método para HTTP-Request
+-- @RequestMapping(value="/URL", method=RequestMethod.POST)
+-- @Scope(value=WebApplicationContext.SCOPE_APPLICATION/REQUEST<Controller>/SESSION<Bean>) //Define o Escopo do Bean/Component
+-- @Transactional //Diz que a classe será transacional
+-- @Valid //javax.validation hibernate.validator //Efetua validação de campos dos beans (instância de objetos no Java)
+
+- [JPA@ANNOTATIONS]
+-- @ElementCollection //Gera uma tabela auxiliar atrelada à classe principal (e.g. Produto tem (>>) Preço)
+-- @Embeddable
+-- @Entity //Mapeia a classe como uma entidade na DB (Hibernate)
+-- @GeneratedValue(strategy=GenerationType.IDENTITY) //Define a estratégia para geração automática de ID
+-- @Id //Controla a geração automática do atributo "id" para as tuplas do banco
